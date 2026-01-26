@@ -1,3 +1,53 @@
+
+======================================
+## project nextjs-ai-llm-on-prem-app
+## for couse AI/LLM on prem APP
+====================================
+
+Config Profile VS code
+• Material Icon Theme (Philipp Kief)
+• Simple React Snippets (Burke Holland)
+• Next.js 13/14+ Power Snippets | TypeScript/JavaScript (krishnaacharyaa)
+• Tailwind CSS Extension Pack (Andrew Mason
+
+
+Create Next.js
+https://nextjs.org/docs/app/getting-started/installation
+
+Manual install npm:
+### 🔷 npm run dev
+```npm run create project manual
+npx create-next-app@latest
+> nextjs-ai-llm-on-prem-app
+> No,customize setting
+> TypeScript > Yes
+> ESLint > Yes
+> React Complier > No 
+> Tailwind css ? > Yes
+> Src/directory > Yes 
+> App Router? > No 
+```
+
+Auto install 
+```npm:
+npx create-next-app@latest nextjs-ai-llm-on-prem-app --yes
+cd nextjs-ai-llm-on-prem-app
+```
+
+### 🔷 npm cmd command
+### run for open websit
+```npm run dev
+```
+
+Open link : 
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.42:3000
+
+
+======================================
+## Default Read me
+====================================
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
