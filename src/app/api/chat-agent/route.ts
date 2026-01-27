@@ -1,3 +1,4 @@
+import { getCurrentTime } from "@/app/lib/llm-tools";
 import { ChatOllama } from "@langchain/ollama";
 import { createAgent, HumanMessage, SystemMessage } from "langchain";
 import { NextResponse } from "next/server";
@@ -10,7 +11,8 @@ import { NextResponse } from "next/server";
     });
     const agent = createAgent({ 
           model: llm 
-        , tools : [] // เพิ่มเครื่องมือถ้ามี
+          , systemPrompt: 'คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ'
+        , tools : [ getCurrentTime] // เพิ่มเครื่องมือถ้ามี
     });
 
 
@@ -19,11 +21,12 @@ export async function POST() {
 
     const response = await agent.invoke({
         messages: [
-            new SystemMessage('คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ')
-            , new HumanMessage('สวัสดี ปกติการลาพักผ่อน ในประเทศ ลาได้กี่วัน')
+           // new SystemMessage('คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ')
+            // new HumanMessage('สวัสดี ปกติการลาพักผ่อน ในประเทศ ลาได้กี่วัน') 
+              new HumanMessage('สวัสดีครับ วันนี้วันที่เท่าไหร่ครับ')
 
         ] 
     }); 
 
-    return NextResponse.json({ llm_message: response.messages });
+    return NextResponse.json({ llm_message: response.messages[response.messages.length - 1].content });
 }

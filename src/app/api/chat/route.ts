@@ -1,3 +1,5 @@
+import { getCurrentTime } from "@/app/lib/llm-tools";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatOllama } from "@langchain/ollama";
 import { NextResponse } from "next/server";
 
@@ -9,10 +11,16 @@ export async function POST() {
         maxRetries: 3
     });
 
-    const response = await llm.invoke([
-        { role: 'system', content: 'คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ' },
-        { role: 'human', content: 'ปกติการลาพักผ่อนในประเทศไทย ลาได้กี่วัน' }
-    ]); 
+    const llmWithTool = llm.bindTools([getCurrentTime]);
 
-    return NextResponse.json({ llm_message: response.content });
+    const prompt = ChatPromptTemplate.fromMessages([
+        ['system', 'คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ'],
+        ['human', '{question}']
+    ]);
+
+    const chain = prompt.pipe(llmWithTool);
+
+    const response = await chain.invoke({ question: 'วันนี้วันที่เท่าไหร่ครับ' }); 
+
+    return NextResponse.json({ llm_message: response });
 }
