@@ -16,8 +16,9 @@ https://nextjs.org/docs/app/getting-started/installation
 
 Manual install npm:
 ### 🔷 npm run dev
-```npm run create project manual
-npx create-next-app@latest
+```
+## npm run create project manual
+> npx create-next-app@latest
 > nextjs-ai-llm-on-prem-app
 > No,customize setting
 > TypeScript > Yes
@@ -29,14 +30,18 @@ npx create-next-app@latest
 ```
 
 Auto install 
-```npm:
-npx create-next-app@latest nextjs-ai-llm-on-prem-app --yes
-cd nextjs-ai-llm-on-prem-app
+```
+#npm:
+> npx create-next-app@latest nextjs-ai-llm-on-prem-app --yes
+> cd nextjs-ai-llm-on-prem-app
 ```
 
 ### 🔷 npm cmd command
 ### run for open websit
-```npm run dev
+```
+Command npm run
+   > npm run dev
+   > npm run build
 ```
 
 Open link : 
@@ -52,13 +57,29 @@ https://orm.drizzle.team/docs/get-started
 # postgress sql
 https://orm.drizzle.team/docs/get-started/postgresql-new
 
-```>> npm i drizzle-orm pg dotenv@16
+```
+   >> npm i drizzle-orm pg dotenv@16
    >> npm i -D drizzle-kit tsx @types/pg
 ```
 
 # คำสั่ง push code
-```>> npx drizzle-kit push
 ```
+   >> npx drizzle-kit push
+```
+
+
+## download UI สำเร็จรูป login
+https://ui.shadcn.com/docs/installation/next
+
+
+#download UI สำเร็จรูป
+https://ui.shadcn.com/blocks
+```
+   >> npx shadcn@latest init
+   >> npx shadcn@latest add login-01
+```
+
+
 
 
 ======================================

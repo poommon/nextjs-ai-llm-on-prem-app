@@ -1,4 +1,4 @@
-import { getCurrentTime } from "@/app/lib/llm-tools";
+import { getCurrentTime } from "@/lib/llm-tools";
 import { ChatOllama } from "@langchain/ollama";
 import { BaseMessage, HumanMessage, SystemMessage, ToolMessage } from "langchain";
 import { NextResponse } from "next/server";
