@@ -16,7 +16,7 @@ https://nextjs.org/docs/app/getting-started/installation
 
 Manual install npm:
 ### 🔷 npm run dev
-```
+```bash
 ## npm run create project manual
 > npx create-next-app@latest
 > nextjs-ai-llm-on-prem-app
@@ -38,7 +38,7 @@ Auto install
 
 ### 🔷 npm cmd command
 ### run for open websit
-```
+```bash
 Command npm run
    > npm run dev
    > npm run build
@@ -57,13 +57,13 @@ https://orm.drizzle.team/docs/get-started
 # postgress sql
 https://orm.drizzle.team/docs/get-started/postgresql-new
 
-```
+```bash
    >> npm i drizzle-orm pg dotenv@16
    >> npm i -D drizzle-kit tsx @types/pg
 ```
 
 # คำสั่ง push code
-```
+```bash
    >> npx drizzle-kit push
 ```
 
@@ -74,13 +74,17 @@ https://ui.shadcn.com/docs/installation/next
 
 #download UI สำเร็จรูป
 https://ui.shadcn.com/blocks
-```
+```bash
    >> npx shadcn@latest init
    >> npx shadcn@latest add login-01
 ```
 
 
-
+#download ai sdk
+https://ai-sdk.dev/getting-started
+```bash
+   >> npm i ai
+```
 
 ======================================
 ## Default Read me

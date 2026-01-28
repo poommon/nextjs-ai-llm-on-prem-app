@@ -16,11 +16,10 @@ export default async function Dashboard() {
 
  
   return (
-    <main>
-       <div className="text-right"><LogoutButton></LogoutButton> </div>
-
+    <main> 
+{/* 
       <div className="text-green-600 text-center -2 mt-10"> 
-        Hello dashboard</div> 
+        Hello dashboard</div>  */}
     {/* <div>email = {user?.email} ::  ID = {user?.id}</div>
     <div>{JSON.stringify(user)}</div>  */}
     <ChatWindow email={user.email} id ={user.id}></ChatWindow>

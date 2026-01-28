@@ -7,7 +7,6 @@ const llm = new ChatOllama({
     model: "scb10x/typhoon2.5-qwen3-4b:latest",
     temperature: 0.2,
     maxRetries: 3,
-
 });
 
 const llmWithTools = llm.bindTools([getCurrentTime]);
