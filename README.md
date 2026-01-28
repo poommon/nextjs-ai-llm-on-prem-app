@@ -43,6 +43,23 @@ Open link :
 - Local:         http://localhost:3000
 - Network:       http://192.168.1.42:3000
 
+## download postgress docker
+https://orm.drizzle.team/docs/get-started/postgresql-new
+
+## connect ORM
+https://orm.drizzle.team/docs/get-started
+
+# postgress sql
+https://orm.drizzle.team/docs/get-started/postgresql-new
+
+```>> npm i drizzle-orm pg dotenv@16
+   >> npm i -D drizzle-kit tsx @types/pg
+```
+
+# คำสั่ง push code
+```>> npx drizzle-kit push
+```
+
 
 ======================================
 ## Default Read me
