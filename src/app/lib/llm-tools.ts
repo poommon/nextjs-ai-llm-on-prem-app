@@ -1,14 +1,16 @@
 import { tool } from "langchain";
 import * as z from "zod";
 
-export const getCurrentTime = tool(
-    ()=>{
+const getCurrentTime = tool(
+    (_) => {
         const now = new Date();
-        return `วันที่ ${now.toLocaleDateString('th-TH')} เวลา ${now.toLocaleTimeString('th-TH')}`;
-    },{
-        name : 'get_current_time',
-        description : 'ดูวันที่ และเวลาปัจจุบัน',
-        schema : z.object({})
-    } 
+        return now.toDateString() + now.toLocaleTimeString('th-TH'); 
+    },
+    {
+        name: 'get_current_time',
+        description: 'ดูวันที่ และเวลาปัจจุบัน',
+        schema: z.object({})
+    }
+);
 
-)
+export { getCurrentTime };
