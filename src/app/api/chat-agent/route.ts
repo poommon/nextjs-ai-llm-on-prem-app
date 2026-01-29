@@ -25,8 +25,9 @@ export async function POST() {
             // new HumanMessage('สวัสดี ปกติการลาพักผ่อน ในประเทศ ลาได้กี่วัน') 
               new HumanMessage('สวัสดีครับ วันนี้วันที่เท่าไหร่ครับ')
 
-        ] 
-    }); 
+        ]} ,
+        {recursionLimit:20}
+    ); 
 
     return NextResponse.json({ llm_message: response.messages[response.messages.length - 1].content });
 }

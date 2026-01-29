@@ -19,6 +19,7 @@ export async function POST() {
             "คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรีื่องนโยบายการลา และสวัสดิการต่างๆ ของบริษัท",
         ),
         new HumanMessage("วันนี้วันที่เท่าไหร่?"),
+        
     ];
 
     let response = await llmWithTools.invoke(messages);

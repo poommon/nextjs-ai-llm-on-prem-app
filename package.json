@@ -12,6 +12,7 @@
     "@ai-sdk/langchain": "^2.0.62",
     "@ai-sdk/react": "^3.0.59",
     "@langchain/core": "^1.1.17",
+    "@langchain/mcp-adapters": "^1.1.2",
     "@langchain/ollama": "^1.2.1",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",

@@ -1,52 +1,99 @@
 import { ChatOllama } from "@langchain/ollama";
-import { AIMessageChunk, createAgent } from "langchain";
+import { createAgent } from "langchain";
 import { NextRequest } from "next/server";
 import { toBaseMessages, toUIMessageStream } from '@ai-sdk/langchain';
 import { createUIMessageStreamResponse, UIMessage } from 'ai';
 
 import { getCurrentTimeTool, getUserDataTool } from "@/lib/llm-tools";
-import { getServerUser } from "@/lib/auth";
-
-export const maxDuration = 60;
+import { getServerUser } from "@/lib/auth/server";
+import { redirect } from "next/navigation";
+import { MultiServerMCPClient } from "@langchain/mcp-adapters";
 
 // สร้าง agent ด้วย createAgent
 const llm = new ChatOllama({
-        model: 'scb10x/typhoon2.5-qwen3-4b:latest',
+        // model: 'qwen3-vl:4b',
+        model: 'gpt-oss:20b-cloud',
         temperature: 0.2,
         maxRetries: 3
 });
 
-function getdynamicSystemPrompt(userId:number) {
-    // สามารถเพิ่ม logic เพื่อดึง prompt จากฐานข้อมูลหรือไฟล์ได้
-    let prompt = process.env.SYSTEM_PROMPT || "You are a helpful assistant.";
-    prompt = prompt?.replace("{userId}", userId.toString()) || prompt;
-    console.log("System Prompt:", prompt);
-    return prompt;
+// Tool จาก MCP Server
+async function getMCPTools() {
+    const mcpClient = new MultiServerMCPClient({
+        product: {
+            transport: 'http',
+            url: 'http://localhost:3001/mcp', // https://mcp-server-app-eta.vercel.app/mcp
+        },
+    });
+    const mcpTools = await mcpClient.getTools();
+    return mcpTools;
 }
 
 
+// async function getMCPTools() {
+//     const mcpClient = new MultiServerMCPClient({
+//         product: {
+//             transport: 'http',
+//             url: 'http://localhost:3001/mcp',
+//         }
+//     });
+//     const mcpTools = await mcpClient.getTools();
+    
+//     // Wrap MCP tools เพื่อให้ return เป็น string เสมอ
+//     // แก้ปัญหา "Non string tool message content is not supported"
+//     const wrappedTools = mcpTools.map((mcpTool) => {
+//         const originalInvoke = mcpTool.invoke.bind(mcpTool);
+
+//         mcpTool.invoke = async (input: any, config?: any) => {
+//             const result = await originalInvoke(input, config);
+//             // ถ้า result ไม่ใช่ string ให้แปลงเป็น JSON string
+//             if (typeof result === 'string') {
+//                 return result;
+//             }
+//             return JSON.stringify(result);
+//         };
+//         return mcpTool;
+//     });
+    
+//     return wrappedTools;
+// }
+
+// สร้าง dynamic system prompt
+function getDynamicPrompt(userId: number, userRole: string) {
+    let prompt = process.env.SYSTEM_PROMPT;
+    prompt = prompt?.replace('{userId}', userId.toString());
+    if (userRole === 'admin') {
+        prompt += `\n\n สิทธิ์: ผู้ดูแลระบบ สามารถใช้งานได้ทุกฟังก์ชัน สามารถค้นหาข้อมูลพนักงานได้ทุกคน ทุกรหัสพนักงาน`
+    }
+    console.log(prompt);
+    return prompt;
+}
+
 // http://localhost:3000/api/chatv3
 export async function POST(req: NextRequest) {
-    const { messages }: { messages: UIMessage[] } = await req.json();
     const currentUser = await getServerUser();
     if (!currentUser) {
-        return new Response('Unauthorized', { status: 401 });
+        redirect('/login');
     }
+
+    const { messages }: { messages: UIMessage[] } = await req.json();
 
     const langchainMessages = await toBaseMessages(messages);
 
+    // Load Tools Local + MCP
+    const mcpTools = await getMCPTools(); 
+
+    const allTools = [...mcpTools, getCurrentTimeTool, getUserDataTool(currentUser.id, currentUser.role)];
+
     const agent = createAgent({
         model: llm,
-        systemPrompt: getdynamicSystemPrompt(currentUser.id),
-        tools: [
-            getCurrentTimeTool,
-            getUserDataTool,
-        ],
+        systemPrompt: getDynamicPrompt(currentUser.id, currentUser.role),
+        tools: allTools
     });
 
     const result = agent.streamEvents(
       { messages: langchainMessages },
-      { streamMode: ['values', 'messages'] }
+      { version: 'v2' }
     );
     
     // Convert the LangChain stream to UI message stream

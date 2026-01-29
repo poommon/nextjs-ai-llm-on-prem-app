@@ -1,4 +1,3 @@
-import { error } from "console";
 import { tool } from "langchain";
 import * as z from "zod";
 
@@ -18,40 +17,38 @@ const getUserDataToolSchema = z.object({
     userId: z.number().describe("รหัสพนักงาน (เช่น 16) ต้องส่งมาเสมอเมื่อถามข้อมูลส่วนตัว")
 });
 
-const getUserDataTool = tool(
+function getUserDataTool(currentUserId: number, userRole: string) {
+
+return tool(
     async ({ userId }) => {
         const res = await fetch('http://localhost:3000/api/user/' + userId);
 
-        
-       if(res.status === 404){
-         return JSON.stringify({ 
-            error: "ไม่พบข้อมูลผู้ใช้"
-            , message : `ไม่พบข้อมูลพนักงานที่มีรหัส ${userId}`
+        if (res.status === 404) {
+            return JSON.stringify({
+                err: "NOT FOUND",
+                message: "ไม่พบข้อมูลพนักงาน"
+            });
+        }
 
-          });
-       }  
- 
-       if (!res.ok) {
-        return JSON.stringify({ 
-            error: "เกิดข้อผิดพลาดในการดึงข้อมูล"
-            ,message : `สถานะการตอบกลับ ${res.status} ${res.statusText}`
-        }); 
-         }
+        if (!res.ok) {
+            return JSON.stringify({
+                err: "FETCH ERROR",
+                message: "การดึงข้อมูลมีปัญหาจาก Server"
+            });
+        }
 
-          // ตรวจสอบสิทธิ์ให้เข้าถึงข้อมูลเฉพาะของตัวเอง
         const data = await res.json();
-        const isOwnData = (userId === data.userId); // สมมติ userId มาจาก session หรือ token
-         console.log(data,isOwnData)
+        
+        // ถ้า role = admin อนุญาตให้ดึงข้อมูลได้ทุกคน
+        if (userRole === 'admin') {
+            console.log("[Tool] Admin access granted.");
+        } 
+        // ถ้าไม่ใช่ admin ต้องตรวจสอบว่า userId ที่ขอข้อมูลตรงกับ currentUser.id หรือไม่
+        else if (!currentUserId || currentUserId !== userId) {
+            return `คุณไม่มีสิทธิ์ในการเข้าถึงข้อมูลของผู้ใช้ที่มีรหัส ${userId}`;
+        }
 
-       if (!isOwnData) {
-               return JSON.stringify({ 
-            error: "Access Denied"
-            , message : `ไม่อนุญาติให้เข้าถึงข้อมูลบุคลลอื่น ${userId}`
-
-          });
-       }  
-
-         return JSON.stringify(await res.json());
+        return JSON.stringify(data);
     },
     {
         name: "get_user_data",
@@ -65,7 +62,11 @@ const getUserDataTool = tool(
         `,
         schema: getUserDataToolSchema,
     }
-);
+)
+} 
+
+
+
 
 
 export { getCurrentTimeTool, getUserDataTool };

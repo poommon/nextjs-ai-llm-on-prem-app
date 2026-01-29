@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { staffTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-// http://localhost:3000/api/user/44
+// http://localhost:4000/api/user/16
 export async function GET(req: NextRequest, {params}: {params: Promise<{id: string}>}) {
     try {
 
