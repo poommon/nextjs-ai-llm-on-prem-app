@@ -1,4 +1,4 @@
-import { getCurrentTime } from "@/lib/llm-tools";
+import { getCurrentTimeTool } from "@/lib/llm-tools";
 import { ChatOllama } from "@langchain/ollama";
 import { BaseMessage, HumanMessage, SystemMessage, ToolMessage } from "langchain";
 import { NextResponse } from "next/server";
@@ -9,10 +9,10 @@ const llm = new ChatOllama({
     maxRetries: 3,
 });
 
-const llmWithTools = llm.bindTools([getCurrentTime]);
+const llmWithTools = llm.bindTools([getCurrentTimeTool]);
 
 export async function POST() {
-    const tools = { get_current_time: getCurrentTime };
+    const tools = { get_current_time: getCurrentTimeTool };
 
     const messages: BaseMessage[] = [
         new SystemMessage(

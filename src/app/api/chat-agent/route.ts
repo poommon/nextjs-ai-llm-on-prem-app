@@ -1,4 +1,4 @@
-import { getCurrentTime } from "@/lib/llm-tools";
+import { getCurrentTimeTool } from "@/lib/llm-tools";
 import { ChatOllama } from "@langchain/ollama";
 import { createAgent, HumanMessage, SystemMessage } from "langchain";
 import { NextResponse } from "next/server";
@@ -12,7 +12,7 @@ import { NextResponse } from "next/server";
     const agent = createAgent({ 
           model: llm 
           , systemPrompt: 'คุณเป็นผู้จัดการฝ่าย HR คอยตอบคำถามให้กับพนักงานในเรื่องนโยบายการลา สวัสดิการต่างๆ'
-        , tools : [ getCurrentTime] // เพิ่มเครื่องมือถ้ามี
+        , tools : [ getCurrentTimeTool] // เพิ่มเครื่องมือถ้ามี
     });
 
 

@@ -1,7 +1,8 @@
 
 //http://192.168.1.42:3000/dashboard
 
-import { ChatWindow } from "@/components/chat-window";
+import ChatWindowV19 from "@/components/chat-window";
+// import { ChatWindowV2 } from "@/components/chat-window-v2";
 import LogoutButton from "@/components/logout-button";
 import { getServerUser } from "@/lib/auth"; 
 import { redirect } from "next/navigation";
@@ -16,15 +17,9 @@ export default async function Dashboard() {
 
  
   return (
-    <main> 
-{/* 
-      <div className="text-green-600 text-center -2 mt-10"> 
-        Hello dashboard</div>  */}
-    {/* <div>email = {user?.email} ::  ID = {user?.id}</div>
-    <div>{JSON.stringify(user)}</div>  */}
-    <ChatWindow email={user.email} id ={user.id}></ChatWindow>
-    
-   
+    <main>  
+    {/* <ChatWindowV2 email={user.email} id ={user.id}></ChatWindowV2> */}
+     <ChatWindowV19 email={user.email} id ={user.id}></ChatWindowV19> 
     </main>
   );
 }
